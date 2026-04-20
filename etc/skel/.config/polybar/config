@@ -1,9 +1,10 @@
 [colors]
-# background = ${xrdb:background}
-background = #16191f
+background = ${xrdb:background}
+# background = #9516191f
 foreground = #9baec8
+bg_accent = ${xrdb:color0}
 
-primary = #81A1C1
+primary = #798BC7
 accent = #5E81AC
 red = #BF616A
 green = #A3BE8C
@@ -41,6 +42,7 @@ offset-y = 0
 fixed-center = true
 bottom = false
 #locale = ru_RU.UTF-8
+underline-size = 1
 
 background = ${colors.background}
 foreground = ${colors.foreground}
@@ -51,24 +53,24 @@ line-color = #f00
 border-size = 0
 border-color = #00000000
 
-padding-left = 3
-padding-right = 3
+padding-left = 0
+padding-right = 0
 
-module-margin-left = 5
+module-margin-left = 3
 module-margin-right = 0
 
 # font-0 = "Clear Sans:style=Bold:size=10:antialias=false;2"
 font-0 = "Ubuntu:style=Bold:size=10:antialias=false;2"
 #font-2 = "Siji:pixelsize=8;1"
 # Cat unicode: echo -e "\uF31A"
-font-1 = "Font Awesome 6 Free:style=Regular:pixelsize=9;2"
-font-2 = "Font Awesome 6 Free:style=Solid:pixelsize=9;2"
-font-3 = "Font Awesome 6 Brands:pixelsize=9;2"
+font-1 = "Font Awesome 7 Free:style=Regular:pixelsize=9;2"
+font-2 = "Font Awesome 7 Free:style=Solid:pixelsize=9;2"
+font-3 = "Font Awesome 7 Brands:pixelsize=9;2"
 font-4 = "Hack Nerd Font Mono:pixelsize=16:antialias=false;4"
 font-5 = "Weather Icons:style=Regular:pixelsize=10:antialias=false;2"
 
 
-modules-left = app web term rss cpu memory uparch mpd
+modules-left = app web term rss cpu memory uparch mpd ewmh
 modules-center = title
 modules-right = fs tor alsa xkeyboard off
 
@@ -85,17 +87,22 @@ enable-ipc = true
 [module/fs]
 type = internal/fs
 mount-0 = /
-mount-1 = /home
-# mount-2 = /media/files
-interval = 100
+#mount-1 = /home
+#mount-2 = /media/files
+interval = 10
 fixed-values = true
 spacing = 2
 format-mounted = <label-mounted>
+format-mounted-prefix = " "
+format-mounted-padding = 1
+format-mounted-prefix-foreground = ${colors.primary}
 format-unmounted = <label-unmounted>
-label-mounted =  %used%
-label-mounted-foreground = ${colors.accent}
-label-unmounted = no mount
-label-unmounted-foreground = ${colors.red}
+format-unmounted-prefix = " "
+format-unmounted-padding = 1
+format-unmounted-prefix-foreground = ${colors.suffix}
+label-mounted = " %free%"
+label-unmounted = %mountpoint%: not mounted
+label-unmounted-foreground = ${colors.text}
 
 
 
@@ -114,8 +121,8 @@ label-font = 0
 type = custom/script
 exec = ~/.config/polybar/uparch.sh
 interval = 600
-format-prefix = " "
-format-prefix-foreground = ${colors.red}
+format-prefix = "   "
+format-prefix-foreground = ${colors.primary}
 click-left = pamac-manager --updates
 
 
@@ -137,6 +144,7 @@ type = custom/script
 exec = ~/.config/polybar/status tor
 interval = 6
 format = <label>
+format-prefix = "󰦝  "
 # format-padding = 1
 click-left = "systemctl restart tor"
 click-right = "systemctl stop tor"
@@ -156,7 +164,7 @@ type = custom/script
 ; 600s = 10min
 # interval = 600
 # format = " <label> "
-# format-prefix = " "
+# format-prefix = "  "
 tail = true
 format-prefix-foreground = ${colors.primary}
 exec = "~/.config/polybar/gmail/launch.py --prefix ' ' --color '#88C0D0' --nosound"
@@ -166,8 +174,10 @@ click-left = xdg-open https://mail.google.com
 
 [module/term]
 type = custom/text
-content = 
+content = 
 content-foreground = ${colors.primary}
+#content-background = ${colors.bg_accent}
+content-padding = 3
 click-left = xfce4-terminal &
 click-right = xfce4-terminal -e htop &
 
@@ -175,8 +185,10 @@ click-right = xfce4-terminal -e htop &
 
 [module/app]
 type = custom/text
-content = 
+content = 
 content-foreground = ${colors.primary}
+content-background = ${colors.bg_accent}
+content-padding = 3
 #click-left = ulauncher
 click-left = "jgmenu_run >/dev/null 2>&1 &"
 click-right = ~/.bin/rofi-favapp
@@ -187,6 +199,7 @@ click-right = ~/.bin/rofi-favapp
 type = custom/text
 content = 
 content-foreground = ${colors.primary}
+content-padding = 3
 click-left = xfce4-terminal -e newsboat &
 click-right =
 
@@ -196,6 +209,8 @@ click-right =
 type = custom/text
 content = 
 content-foreground = ${colors.primary}
+#content-background = ${colors.bg_accent}
+content-padding = 3
 click-left = ~/.bin/findapp firefox &
 click-right =
 
@@ -204,7 +219,7 @@ click-right =
 [module/cpu]
 type = internal/cpu
 interval = 2
-format-prefix = " "
+format-prefix = "  "
 format-prefix-foreground = ${colors.primary}
 label = %percentage%%
 
@@ -213,7 +228,7 @@ label = %percentage%%
 [module/memory]
 type = internal/memory
 interval = 2
-format-prefix = " "
+format-prefix = "  "
 format-prefix-foreground = ${colors.primary}
 label = %percentage_used%%
 
@@ -262,6 +277,8 @@ label = %layout%
 type = custom/text
 content = 
 content-foreground = ${colors.primary}
+content-background = ${colors.bg_accent}
+content-padding = 3
 click-left = ~/.bin/rofi-logout
 content-margin-right = 0
 
@@ -330,13 +347,13 @@ label-active-background = ${colors.accent}
 
 label-occupied = %name%
 label-occupied-foreground = ${colors.foreground}
-label-occupied-background = ${colors.magenta}
+label-occupied-background = ${colors.bg_accent}
 label-occupied-padding = 4
 
 label-urgent = %name%
 label-urgent-padding = 4
-label-urgent-foreground = #000000
-label-urgent-background = #bd2c40
+label-urgent-foreground = ${colors.background}
+label-urgent-background = ${colors.magenta}
 
 label-empty = %name%
 label-empty-padding = 4

@@ -31,7 +31,7 @@ item_border       = 0
 
 max_items         = 80
 min_items         = 0
-font              = Clear Sans Medium 10
+font              = Clear Sans Medium 12
 icon_size         = 16
 icon_theme        = Qogir
 # ignore_xsettings  = 1
